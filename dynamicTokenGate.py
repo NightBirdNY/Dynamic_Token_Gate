@@ -7,9 +7,7 @@ matplotlib.use('TkAgg')
 import seaborn as sns
 
 
-# ---------------------------------------------------------
-# 1. BÖLÜM: KAPININ MİMARİ TANIMI
-# ---------------------------------------------------------
+# 1.KAPININ MİMARİ TANIMI-
 class DynamicTokenGate(nn.Module):
     def __init__(self, embed_dim):
         super().__init__()
@@ -33,37 +31,33 @@ class DynamicTokenGate(nn.Module):
 
         return x_filtered, keep_mask
 
-
-# ---------------------------------------------------------
-# 2. BÖLÜM: TEST VE ÇİZİM KISMI
-# ---------------------------------------------------------
+# 2. TEST VE ÇİZİM KISMI
 if __name__ == "__main__":
-    print("AIception çalışıyor: Model oluşturuluyor ve sahte veri üretiliyor...")
+    print("AIception çalışıyor: Model oluşturuluyor ve sanal veri üretiliyor...")
 
     batch_size = 1
     num_tokens = 196  # 14x14 izgara
     embed_dim = 64
 
-    # Sahte video karesi (Tensor)
+    # Sanal video karesi
     x_dummy = torch.randn(batch_size, num_tokens, embed_dim)
 
-    # Modeli ayağa kaldırıyoruz
     gate = DynamicTokenGate(embed_dim)
-    gate.train()  # Gumbel-Softmax simülasyonu için eğitim modunda olmalı
+    gate.train()
 
-    # Çıktıları alıyoruz (Tau=0.5 ortalama bir sıcaklık)
+    # Çıktıları alıyoruz
     _, keep_mask = gate(x_dummy, tau=0.5)
 
     # 1D Tensörü (196x1), resim gibi görebilmek için 2D Matrise (14x14) çeviriyoruz
     mask_2d = keep_mask[0, :, 0].detach().numpy().reshape(14, 14)
 
-    print("Isı haritası çiziliyor, lütfen açılan pencereyi kontrol edin...")
+    print("Isı haritası çiziliyor")
 
     plt.figure(figsize=(6, 6))
     sns.heatmap(mask_2d, cmap="Blues", cbar=True, square=True,
                 linewidths=0.5, linecolor='gray', vmin=0, vmax=1)
 
-    plt.title("Gumbel-Softmax Dinamik Yama Eleme (Token Pruning)\n(1 = Koyu Mavi: Tut, 0 = Beyaz: Sil)")
+    plt.title("Gumbel-Softmax Dinamik Yama Eleme \n(1 = Koyu Mavi: Tut, 0 = Beyaz: Sil)")
     plt.axis('off')
 
     # Çıktı kaydetmesi için

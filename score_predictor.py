@@ -6,7 +6,6 @@ import torch.nn.functional as F
 class DynamicTokenGate(nn.Module):
     def __init__(self, embed_dim):
         super().__init__()
-        # Karar Ağı: Yamanın özelliklerine bakarak "Sil (0)/Tut (1)" logitleri üretir
         self.score_predictor = nn.Sequential(
             nn.Linear(embed_dim, embed_dim // 2),
             nn.LayerNorm(embed_dim // 2),
@@ -18,7 +17,7 @@ class DynamicTokenGate(nn.Module):
         # 1. Ham Kararların Hesaplanması
         logits = self.score_predictor(x)
 
-        # 2. Gumbel-Softmax ve STE (Straight-Through Estimator) Hilesi
+        # 2. Gumbel-Softmax ve STE (Straight-Through Estimator) Yöntemi
         if self.training:
             gate_decisions = F.gumbel_softmax(logits, tau=tau, hard=True)
         else:
