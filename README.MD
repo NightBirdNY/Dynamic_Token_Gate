@@ -30,7 +30,7 @@ Gumbel-Softmax kapısının gerçek veri üzerindeki etkisini göstermek için y
 Bu projeyi yerel makinenizde çalıştırmak için Python 3.8+ ve aşağıdaki kütüphanelerin kurulu olması gerekmektedir:
 
 ```bash
-pip install torch torchvision matplotlib seaborn
+pip install -r requirements.txt
 ```
 
 ## C. Kullanım
